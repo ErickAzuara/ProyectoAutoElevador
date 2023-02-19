@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 class Methods{
     Object Clonar(ArrayList ElObjeto){
@@ -8,19 +9,15 @@ class Methods{
     }
 
 
-    ArrayList<Object> IngresarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+    ArrayList<Object> IngresarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora,String Matricula){
         Scanner input = new Scanner(System.in);
-        
         
         Object x;
         //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
         //Erick
-        //Cual es tu matricula de auto
-        System.out.print("Cual es la matricula del auto: \t");
-        String Matricula = input.nextLine();
         System.out.print("En que elevador quiere ingresar su auto");
         int NumEle = input.nextInt()-1;
-        Autos.push(Elevadores.get(NumEle));      
+        Autos.push(Elevadores.get(NumEle)); 
         int pos = 0;
         Object Back;
         for (Object elem : Autos) {
@@ -44,14 +41,137 @@ class Methods{
                 Autos.push(AgrNuevo);
             }
             x = Autos.clone();
-            System.out.println(x);
-            //Elevadores.set(1, x); ///Guardar las modificaciones
             Elevadores.set(NumEle, x); 
             BackupPop.clear();
             Autos.clear();
             Datos.clear();
         return Elevadores;
         //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
+    }
+    ArrayList<Object> RetirarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora, String Matricula){
+        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
+        // Angel 
+            //Informacion que vas a utilizar
+            /*
+            Matricula : Hacer un buscador donde Encuentre la matricula es decir 
+                una comparacion si existe la matricula en esa linea ...
+                Bueno te hecho una mano con eso
+            Elevadores
+            Stack
+            Datos 
+            Backup
+
+            */
+            // Inputs
+            /*
+            *  La Matricula de su auto
+            *  El numero del elevador
+            */
+
+            //Output Mostrar en pantalla
+            /*
+            * Numero de elevador
+            * Numero que ocupaba en el elevador 
+            * Fecha
+            * Hora de Ingreso
+            * Agregar Hora de Salida 
+            * 
+            */
+        
+            //Tu busqueda en cada elevador por medio de la matricula
+            int pos=0;
+            try {
+            for (int i = 0; i < Elevadores.size(); i++) {
+                    System.out.println("----"+Autos.get(i)+"-------");
+                    /*
+                    if(algo.contains(Matricula)){
+                        System.out.println("Aqui esta");
+
+                        pos = i; /// DOnde i es tu posiciones en que espacio estaba 
+                        break;
+                     */
+                    
+
+            }
+                System.out.println("***"+Elevadores.get(pos)+"***");
+            } catch (Exception e) {
+                System.out.println("No se encuentra");
+                Menu(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+            }
+
+
+        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
+        return Elevadores;
+    }
+    void InfoPorEle(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
+        //Yanfer
+        //Inputs
+        /*
+         * El numero de elevador donde supustamente esta su auto
+         */
+
+         //Outputs
+         /*
+          * Mostrar en la pantalla toda la informacion excepto la hora de salida
+          */
+
+
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
+    }
+    void AutosTotal(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
+        //Yanfer
+        /*
+         * La SUMA DE TODOS LOS AUTOS EN LOS ELEVADORES
+         * LA SUMA DE TODOS LOS AUOTS POR CADA ELEVADOR
+         */
+
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
+
+    }
+    void Menu(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+        Scanner input = new Scanner(System.in);
+        String Matricula = "";
+        System.out.println("Cual opcion quieres realizar: \t");
+        System.out.println("1- Ingresar el Auto");
+        System.out.println("2- Retirar el Auto");
+        System.out.println("3- Info. Autos por Elevador");
+        System.out.println("4- Autos Totales");
+        System.out.println("5- SALIR");
+        int opc = input.nextInt();
+        switch (opc) {
+            case 1:
+                System.out.print("Cual es la matricula del auto: \t"+input.nextLine());
+                Matricula = input.nextLine();
+                System.out.println("/////////"+Elevadores+"//////////");
+                Elevadores = IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora ,Matricula);
+                System.out.println("/////////"+Elevadores+"//////////");
+                Menu(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+                break;
+            case 2:
+                System.out.print("Cual es la matricula del auto: \t"+input.nextLine());
+                Matricula = input.nextLine();
+                System.out.println("/////////"+Elevadores+"//////////");
+                Elevadores = RetirarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora, Matricula);
+                System.out.println("/////////"+Elevadores+"//////////");
+                Menu(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+        
+            default:
+                break;
+        }
+        System.out.println("/////////"+Elevadores+"//////////");
     }
 
 }
@@ -76,44 +196,7 @@ public class App {
         Elevadores.add(null);
         Elevadores.add(null);
         Elevadores.add(null);
-        
-        System.out.println("/////////"+Elevadores+"//////////");
-        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
-        System.out.println("/////////"+Elevadores+"//////////");
-        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
-        System.out.println("/////////"+Elevadores+"//////////");
-        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
-        System.out.println("/////////"+Elevadores+"//////////");
 
-        //Menu 
-        /*
-        do {                        
-            
-        } while (Fecha == "");
-        */
-
-
-        
-        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
-        // Angel 
-
-
-
-        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
-        //  ||||||||||||||||||||||||||||||   Metodo = Autos Por Elevador ||||||||||||||||||||||||||||||//
-        //Yanfer
-
-
-        //  ||||||||||||||||||||||||||||||   Metodo = Autos Por Elevador ||||||||||||||||||||||||||||||//
-        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
-        //Yanfer
-
-
-        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
-
-        
-
-
-
+        Metodos.Menu(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
     }
 }
