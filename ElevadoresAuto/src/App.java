@@ -60,7 +60,6 @@ class Methods{
             Stack
             Datos 
             Backup
-
             */
             // Inputs
             /*
@@ -79,14 +78,19 @@ class Methods{
             */
         
             //Tu busqueda en cada elevador por medio de la matricula
+
+            ///HERE BRODATH!!!
             int pos=0;
             try {
             for (int i = 0; i < Elevadores.size(); i++) {
-                    System.out.println("----"+Autos.get(i)+"-------");
+                    System.out.println(Elevadores.get(i).getClass());
+                    Object asd = Elevadores.get(i);
+                    for (Object xa : asd) {
+                        System.out.println(xa);
+                    }
                     /*
                     if(algo.contains(Matricula)){
                         System.out.println("Aqui esta");
-
                         pos = i; /// DOnde i es tu posiciones en que espacio estaba 
                         break;
                      */
