@@ -9,15 +9,15 @@ class Methods{
     }
 
 
-    ArrayList<Object> IngresarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora,String Matricula){
+    ArrayList<Stack<Object>> IngresarAuto(ArrayList<Stack<Object>> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora,String Matricula){
         Scanner input = new Scanner(System.in);
+        
         
         Object x;
         //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
         //Erick
         System.out.print("En que elevador quiere ingresar su auto");
         int NumEle = input.nextInt()-1;
-        Autos.push(Elevadores.get(NumEle)); 
         int pos = 0;
         Object Back;
         for (Object elem : Autos) {
@@ -40,15 +40,14 @@ class Methods{
             for (Object AgrNuevo : BackupPop) { //Vuelve a meter los otros autos
                 Autos.push(AgrNuevo);
             }
-            x = Autos.clone();
-            Elevadores.set(NumEle, x); 
+            Elevadores.set(NumEle, (Stack<Object>)Autos.clone()); 
             BackupPop.clear();
-            Autos.clear();
             Datos.clear();
+            Autos.clear();
         return Elevadores;
         //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
     }
-    ArrayList<Object> RetirarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora, String Matricula){
+    ArrayList<Stack<Object>> RetirarAuto(ArrayList<Stack<Object>> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora, String Matricula){
         //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
         // Angel 
             //Informacion que vas a utilizar
@@ -83,11 +82,7 @@ class Methods{
             int pos=0;
             try {
             for (int i = 0; i < Elevadores.size(); i++) {
-                    System.out.println(Elevadores.get(i).getClass());
-                    Object asd = Elevadores.get(i);
-                    for (Object xa : asd) {
-                        System.out.println(xa);
-                    }
+                System.out.println(Elevadores.get(i).get(1));
                     /*
                     if(algo.contains(Matricula)){
                         System.out.println("Aqui esta");
@@ -97,7 +92,6 @@ class Methods{
                     
 
             }
-                System.out.println("***"+Elevadores.get(pos)+"***");
             } catch (Exception e) {
                 System.out.println("No se encuentra");
                 Menu(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
@@ -107,7 +101,7 @@ class Methods{
         //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
         return Elevadores;
     }
-    void InfoPorEle(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+    void InfoPorEle(ArrayList<Stack<Object>> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
         ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
         //Yanfer
         //Inputs
@@ -123,7 +117,7 @@ class Methods{
 
         ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
     }
-    void AutosTotal(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+    void AutosTotal(ArrayList<Stack<Object>> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
         ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
         //Yanfer
         /*
@@ -134,7 +128,7 @@ class Methods{
         ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
 
     }
-    void Menu(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+    void Menu(ArrayList<Stack<Object>> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
         Scanner input = new Scanner(System.in);
         String Matricula = "";
         System.out.println("Cual opcion quieres realizar: \t");
@@ -186,7 +180,7 @@ public class App {
         Scanner input = new Scanner(System.in);
         Methods Metodos = new Methods();
     
-        ArrayList<Object> Elevadores = new ArrayList<>();
+        ArrayList<Stack<Object>> Elevadores = new ArrayList<>();
         Stack<Object> Autos = new Stack<Object>();
         ArrayList<String> Datos = new ArrayList<>();
         Stack<Object> BackupPop = new Stack<Object>();
