@@ -1,139 +1,115 @@
 import java.io.*;
 import java.util.*;
+class Methods{
+    Object Clonar(ArrayList ElObjeto){
+        Object x;
+        x = ElObjeto.clone();
+        return x;
+    }
+
+
+    ArrayList<Object> IngresarAuto(ArrayList<Object> Elevadores,Stack<Object> Autos,ArrayList<String> Datos,Stack<Object> BackupPop,String Fecha,String LaHora){
+        Scanner input = new Scanner(System.in);
+        
+        
+        Object x;
+        //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
+        //Erick
+        //Cual es tu matricula de auto
+        System.out.print("Cual es la matricula del auto: \t");
+        String Matricula = input.nextLine();
+        System.out.print("En que elevador quiere ingresar su auto");
+        int NumEle = input.nextInt()-1;
+        Autos.push(Elevadores.get(NumEle));      
+        int pos = 0;
+        Object Back;
+        for (Object elem : Autos) {
+            System.out.println(elem+"++++");
+            if(elem == null){
+                break;
+            }
+            pos++;
+        }
+        pos=Autos.size()-(pos+1);
+            for (int i = 0; i < pos+1; i++) {   //Saca todo lo que estaba despues del espacio vacio
+                Back = Autos.pop();
+                BackupPop.push(Back);
+            }
+            BackupPop.remove(null);
+            Datos.add(Matricula);               //Añade las datos y los datos automaticos
+            Datos.add(Fecha);
+            Datos.add(LaHora);
+            Autos.push(Clonar(Datos));
+            for (Object AgrNuevo : BackupPop) { //Vuelve a meter los otros autos
+                Autos.push(AgrNuevo);
+            }
+            x = Autos.clone();
+            System.out.println(x);
+            //Elevadores.set(1, x); ///Guardar las modificaciones
+            Elevadores.set(NumEle, x); 
+            BackupPop.clear();
+            Autos.clear();
+            Datos.clear();
+        return Elevadores;
+        //  ||||||||||||||||||||||||||||||   Metodo = Ingresar Auto ||||||||||||||||||||||||||||||//
+    }
+
+}
 
 
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
-        Stack Hola = new Stack();
-
-        //Entradas
-        /*
-         * Fecha
-         * Numeros de autos
-         * Hora de ingreso 
-         * hora de Salida
-         * 
-         * Los datos se asignara automaticamente
-         * cuando se ingrese o se retire
-         */
-        //ArrayList<Object>[] Elevadores = new ArrayList[3];
-        Stack Autos = new Stack();
-        ArrayList<String> Datos = new ArrayList();
-        Stack BackupPop = new Stack();
+        Methods Metodos = new Methods();
+    
+        ArrayList<Object> Elevadores = new ArrayList<>();
+        Stack<Object> Autos = new Stack<Object>();
+        ArrayList<String> Datos = new ArrayList<>();
+        Stack<Object> BackupPop = new Stack<Object>();
+        
 
         Calendar calendario = Calendar.getInstance();
-        int hora, minutos, segundos;
-        hora =calendario.get(Calendar.HOUR_OF_DAY);
-        minutos = calendario.get(Calendar.MINUTE);
-        segundos = calendario.get(Calendar.SECOND);
-        System.out.println(hora+" "+minutos+" "+segundos);
-        System.out.println(Autos.size());
+        String Fecha,LaHora;
+        Fecha = calendario.get(Calendar.DAY_OF_MONTH)+"-"+calendario.get(Calendar.MONTH)+"-"+calendario.get(Calendar.YEAR);
+        LaHora = calendario.get(Calendar.HOUR_OF_DAY)+":"+calendario.get(Calendar.MINUTE);
+       
+        Elevadores.add(null);
+        Elevadores.add(null);
+        Elevadores.add(null);
         
-        Datos.add("1");
-        Datos.add("1");
-        Datos.add("1");
-        Datos.add("1");
-        Datos.add("1");
-        
-        Object x = Datos.clone();
-        Autos.push(x);
-        Datos.clear();
-        
+        System.out.println("/////////"+Elevadores+"//////////");
+        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+        System.out.println("/////////"+Elevadores+"//////////");
+        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+        System.out.println("/////////"+Elevadores+"//////////");
+        Elevadores = Metodos.IngresarAuto(Elevadores, Autos, Datos, BackupPop, Fecha, LaHora);
+        System.out.println("/////////"+Elevadores+"//////////");
 
-        Datos.add("2");
-        Datos.add("2");
-        Datos.add("2");
-        Datos.add("2");
-        Datos.add("2");
-
-        x = Datos.clone();
-        x = null;
-        Autos.push(x);
-        x = Datos.clone();
-        Autos.push(x);
-
-        
-   
-
-        System.out.println(Autos.size());
-        System.out.println("----");
-
-        ;
-        System.out.println(Autos.empty());
+        //Menu 
         /*
-        System.out.println(Autos);
-        Datos.clear();
-        System.out.println(Autos);
+        do {                        
+            
+        } while (Fecha == "");
+        */
+
+
         
-        Object Backup = Autos.pop();
-        System.out.println("as"+Backup);
-        System.out.println(Autos);
-         */
-
-        /*
-         ArrayList<String> NewAuto = new ArrayList<>();
-        String[] Autos = new String[4];
-        NewAuto.add("ASIN-241");
-        NewAuto.add("23-02-1999");
-        NewAuto.add("12:30");
-        NewAuto.add("15:30");
-        NewAuto.toArray(Autos);
-
-        for (String Element : Autos) {
-            System.out.println(Element);
-        }
-
-        Elevador.push(Hola);
-
-        System.out.println(Elevador);
-
-        NewAuto.clear();
-
-        System.out.println(Elevador);
-
-         */
-        //Cual es tu matricula de auto
-        System.out.print("Cual es la matricula del auto");
-       //---String Matricula = input.nextLine();
-        //input.nextLine();
-
-        //Desplegar la elevadores
-        //Mostrar elevador
-        //Seleccion de elevador
-        System.out.print("En que elevador quiere ingresar su auto");
-        //---int NumEle = input.nextInt();
+        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
+        // Angel 
 
 
-        //Ingreso de Auto al elevador seleccionado
-        //Verificar si hay espacio disponible
-        int pos = 0, opc=0;
-        for (Object elem : Autos) {
-            if(elem == null){
-                opc =1;
-                break;
-            }
-            pos++;
-        }
-        System.out.println("----"+Autos+"----");
-        if(opc>0){
-            for (int i = 0; i < pos; i++) {
-                Object Back = Autos.pop();
-                BackupPop.push(Back);
-            }
-            Autos.remove(null);
-            Autos.push("xxx");    /////////Se agrega el nuevo auto
-            for (Object AgrNuevo : BackupPop) {
-                Autos.push(AgrNuevo);
-            }
-        }else{
-            Autos.push("zzz");    /////////Se agrega el nuevo auto
-        }
-        //Verificaciones
-        
-        
+
+        //  ||||||||||||||||||||||||||||||   Metodo = Retirar Auto ||||||||||||||||||||||||||||||//
+        //  ||||||||||||||||||||||||||||||   Metodo = Autos Por Elevador ||||||||||||||||||||||||||||||//
+        //Yanfer
 
 
+        //  ||||||||||||||||||||||||||||||   Metodo = Autos Por Elevador ||||||||||||||||||||||||||||||//
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
+        //Yanfer
+
+
+        ////  ||||||||||||||||||||||||||||||   Metodo = Autos Totales ||||||||||||||||||||||||||||||//
 
         
 
