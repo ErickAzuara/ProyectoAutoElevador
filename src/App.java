@@ -93,6 +93,7 @@ class Elevador {
         if (vacio()) {
             throw new IllegalStateException("No se puede retirar auto, elevador vacio");
         }
+
         Auto auto = autos.get(numero);
         if (auto == null) {
             throw new IllegalArgumentException(String.format("No se puede retirar auto #%d, lugar vacio", numero));
@@ -172,6 +173,9 @@ class Elevador {
     }
 }
 
+/**
+ * Clase que gestiona elevadores y autos estacionados en ellos.
+ */
 class AdministradorElevador {
     private Scanner input;
     private List<Elevador> elevadores;
@@ -181,7 +185,7 @@ class AdministradorElevador {
         this.elevadores = elevadores;
     }
 
-    Elevador.Status ingresarAuto() {
+    private Elevador.Status ingresarAuto() {
         String matricula = leerMatriculaAuto("Cual es la matricula del auto (vacio para cancelar):", "");
         if ("".equals(matricula)) {
             return null;
@@ -227,7 +231,7 @@ class AdministradorElevador {
      * La Matricula de su auto
      * El numero del elevador
      */
-    Elevador.Status retirarAuto() {
+    private Elevador.Status retirarAuto() {
         String matricula = leerMatriculaAuto("Matricula de auto a retirar (vacio para cancelar):", "");
         Elevador.Status resultado = null;
         for (Elevador elevador : elevadores) {
@@ -265,7 +269,7 @@ class AdministradorElevador {
      * Outputs:
      * Mostrar en la pantalla toda la informacion excepto la hora de salida
      */
-    TotalElevador statusElevador() {
+    private TotalElevador statusElevador() {
         int numeroElevador = leerNumeroElevador("Numero de elevador a consultar (0 para cancelar):", 0);
         if (numeroElevador == 0) {
             return null;
@@ -290,7 +294,7 @@ class AdministradorElevador {
      * La SUMA DE TODOS LOS AUTOS EN LOS ELEVADORES
      * LA SUMA DE TODOS LOS AUOTS POR CADA ELEVADOR
      */
-    void statusTotal() {
+    private void statusTotal() {
         int autosTotales = 0;
 
         System.out.println();
@@ -308,6 +312,8 @@ class AdministradorElevador {
         }
         System.out.println(String.format("Total Autos: %d", autosTotales));
     }
+
+    // ======================================= Interfaz de Usuario ==========================================
 
     void menu() {
         System.out.println("Cual opcion quieres realizar:");
@@ -378,6 +384,14 @@ class AdministradorElevador {
         }
     }
 
+    /**
+     * Solicita al usuario in valor entero que representa un numero de elevador. Esta funcion valida que el numero ingresado
+     * se a un numero de elevador valido. Si el valor no es valido se le volvera a solicitar un valor al usuario hasta
+     * que ingrese un valor valido o ingrese el valor determinado por el parametro `valorCancelar` de esta funcion.
+     * 
+     * @param mensaje El mensaje o "prompt" a mostrar al usuario
+     * @param valorCancelar El valor que cuando se ingresado cancela la seleccion de elevador
+     */
     private int leerNumeroElevador(String mensaje, int valorCancelar) {
         int numeroElevador = valorCancelar;
         Set<Integer> opciones = new HashSet<Integer>();
@@ -397,6 +411,12 @@ class AdministradorElevador {
         return numeroElevador;
     }
 
+    /**
+     * Solicita al usuario una cadena que representa la matricula de su auto.
+     * @param mensaje El mensaje o "prompt" a mostrar al usuario.
+     * @param valorCancelar
+     * @return
+     */
     private String leerMatriculaAuto(String mensaje, String valorCancelar) {
         System.out.println(mensaje + input.nextLine());
         String matricula = input.nextLine();
