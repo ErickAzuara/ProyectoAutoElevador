@@ -1,4 +1,4 @@
-# Elevadores TJ EAD
+# Elevadores TJ EDA
 
 Una empresa tiene 3 elevadores para estacionamiento de aytos y desea automatizar el proceso de ingreso y retiro de autos a lo mismos.
 
@@ -27,3 +27,5 @@ Datos que se asignarán automáticamente cuande se ingrese or retire un auto.
   1. Después de desplegar los resultados en cada una de las opciones (1-4), preguntar al usuario si desea realizar otra acción, de ser así, se repite el proceso, de lo contrario, se regresa al menú principal.
   2. Todos los valores ingresados, deberán ser validados.
   3. Enviar los mensajes correspondientes para cada excepción controlada.
+
+![](./Documentation/EstructuraProyectoAuto.jpg)
