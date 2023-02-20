@@ -82,10 +82,12 @@ class Elevador {
 
     /**
      * Retirar un auto utilizando el numero dentro del elevador.
+     * 
      * @param numero El numero a retirar.
      * @return El reporte del auto retirado
-     * @throws IllegalStateException Arrojada si el elevador esta vacío
-     * @throws IllegalArgumentException Arrojada si el vehiculo no se encuentra en el elevador.
+     * @throws IllegalStateException    Arrojada si el elevador esta vacío
+     * @throws IllegalArgumentException Arrojada si el vehiculo no se encuentra en
+     *                                  el elevador.
      */
     Status retirarAuto(int numero) throws IllegalStateException, IllegalArgumentException {
         if (vacio()) {
@@ -105,8 +107,9 @@ class Elevador {
      * 
      * @param matricula
      * @return El reporte del auto retirado
-     * @throws IllegalStateException Arrojado si el elevador esta vacío
-     * @throws IllegalArgumentException Arrajada si la matricula no se encuentra dentro del elevador
+     * @throws IllegalStateException    Arrojado si el elevador esta vacío
+     * @throws IllegalArgumentException Arrajada si la matricula no se encuentra
+     *                                  dentro del elevador
      */
     Status retirarAuto(String matricula) throws IllegalStateException, IllegalArgumentException {
         for (Map.Entry<Integer, Auto> registro : autos.entrySet()) {
@@ -179,29 +182,33 @@ class AdministradorElevador {
     }
 
     Elevador.Status ingresarAuto() {
-        String matricula = "";
-        System.out.print("Cual es la matricula del auto: \t" + input.nextLine());
-        matricula = input.nextLine();
+        String matricula = leerMatriculaAuto("Cual es la matricula del auto (vacio para cancelar):", "");
+        if ("".equals(matricula)) {
+            return null;
+        }
 
-        System.out.print("En que elevador quiere ingresar su auto: ");
-        int numeroElevador = input.nextInt();
-
+        boolean valido = false;
         Elevador elevador = null;
-        for (Elevador e : elevadores) {
-            if (e.numero == numeroElevador) {
-                elevador = e;
-                break;
+        do {
+            int numeroElevador = leerNumeroElevador("En que elevador quiere ingresar su auto (0 para cancelar):", 0);
+            if (numeroElevador == 0) {
+                return null;
             }
-        }
-        if (elevador == null) {
-            System.out.println(String.format("Elevador invalido: %d", numeroElevador));
-            return null;
-        }
-        if (elevador.disponibles() == 0) {
-            System.out.println(String.format("Elevador sin espacios: %d", elevador.disponibles()));
-            return null;
-        }
 
+            for (Elevador e : elevadores) {
+                if (e.numero == numeroElevador) {
+                    elevador = e;
+                    break;
+                }
+            }
+
+            if (elevador.disponibles() == 0) {
+                System.out.println(String.format("Elevador sin espacios: %d", elevador.disponibles()));
+                valido = false;
+            } else {
+                valido = true;
+            }
+        } while (!valido);
         return elevador.ingresarAuto(matricula);
     }
 
@@ -221,9 +228,7 @@ class AdministradorElevador {
      * El numero del elevador
      */
     Elevador.Status retirarAuto() {
-        String matricula = "";
-        System.out.print("Cual es la matricula del auto: \t" + input.nextLine());
-        matricula = input.nextLine();
+        String matricula = leerMatriculaAuto("Matricula de auto a retirar (vacio para cancelar):", "");
         Elevador.Status resultado = null;
         for (Elevador elevador : elevadores) {
             try {
@@ -240,6 +245,9 @@ class AdministradorElevador {
         return resultado;
     }
 
+    /**
+     * Clase auxiliar para reportar el status de un elevador.
+     */
     static class TotalElevador {
         final int numero;
         final List<Elevador.Status> status;
@@ -258,8 +266,10 @@ class AdministradorElevador {
      * Mostrar en la pantalla toda la informacion excepto la hora de salida
      */
     TotalElevador statusElevador() {
-        System.out.print("Que elevador desea consultar: ");
-        int numeroElevador = input.nextInt();
+        int numeroElevador = leerNumeroElevador("Numero de elevador a consultar (0 para cancelar):", 0);
+        if (numeroElevador == 0) {
+            return null;
+        }
 
         Elevador elevador = null;
         for (Elevador e : elevadores) {
@@ -366,6 +376,31 @@ class AdministradorElevador {
             default:
                 break;
         }
+    }
+
+    private int leerNumeroElevador(String mensaje, int valorCancelar) {
+        int numeroElevador = valorCancelar;
+        Set<Integer> opciones = new HashSet<Integer>();
+        for (Elevador elevador : elevadores) {
+            opciones.add(elevador.numero);
+        }
+
+        boolean invalido = false;
+        do {
+            System.out.println(mensaje);
+            for (Elevador elevador : elevadores) {
+                System.out.println(String.format("\t%d)", elevador.numero));
+            }
+            numeroElevador = input.nextInt();
+            invalido = !opciones.contains(numeroElevador);
+        } while (invalido && numeroElevador != valorCancelar); 
+        return numeroElevador;
+    }
+
+    private String leerMatriculaAuto(String mensaje, String valorCancelar) {
+        System.out.println(mensaje + input.nextLine());
+        String matricula = input.nextLine();
+        return matricula;
     }
 }
 
