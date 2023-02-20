@@ -3,7 +3,7 @@ import java.util.*;
 class Elevador {
 
     final int numero;
-    final private Map<Integer, Auto> autos;
+    final private Stack<Auto> autos;
     final private int capacidad;
 
     /**
@@ -36,10 +36,7 @@ class Elevador {
     Elevador(int numero, int capacidad) {
         this.numero = numero;
         this.capacidad = capacidad;
-        this.autos = new HashMap<Integer, Auto>();
-        for (int i = 0; i < capacidad; i++) {
-            this.autos.put(i, null);
-        }
+        this.autos = new Stack<Auto>();
     }
 
     /**
@@ -47,11 +44,11 @@ class Elevador {
      */
     List<Status> status() {
         List<Status> status = new ArrayList<Status>();
-        for (Map.Entry<Integer, Auto> registro : autos.entrySet()) {
-            Auto auto = registro.getValue();
+        for (int i = 0; i < autos.size(); i++) {
+            Auto auto = autos.elementAt(i);
             if (auto == null)
                 continue;
-            status.add(new Status(numero, registro.getKey(), auto.fechaIngreso, auto.matricula));
+            status.add(new Status(numero, i, auto.fechaIngreso, auto.matricula));
         }
         return status;
     }
@@ -69,15 +66,10 @@ class Elevador {
             throw new IllegalStateException("No se puede agrear auto, elevador lleno");
         }
 
-        for (int i = 0; i < capacidad; i++) {
-            if (autos.get(i) == null) {
-                Auto auto = new Auto(matricula, new Date());
-                autos.put(i, auto);
-                return new Status(numero, i, auto.fechaIngreso, auto.matricula);
-            }
-        }
+        Auto auto = new Auto(matricula, new Date());
+        autos.push(auto);
 
-        throw new IllegalStateException("No se puede agrear auto, elevador lleno");
+        return new Status(numero, autos.size(), auto.fechaIngreso, auto.matricula);
     }
 
     /**
@@ -94,13 +86,13 @@ class Elevador {
             throw new IllegalStateException("No se puede retirar auto, elevador vacio");
         }
 
-        Auto auto = autos.get(numero);
-        if (auto == null) {
+        try {
+            Auto auto = autos.elementAt(numero);
+            autos.remove(numero);
+            return new Status(this.numero, numero, auto.fechaIngreso, auto.matricula);
+        } catch (IndexOutOfBoundsException ex) {
             throw new IllegalArgumentException(String.format("No se puede retirar auto #%d, lugar vacio", numero));
         }
-
-        autos.put(numero, null);
-        return new Status(this.numero, numero, auto.fechaIngreso, auto.matricula);
     }
 
     /**
@@ -113,10 +105,11 @@ class Elevador {
      *                                  dentro del elevador
      */
     Status retirarAuto(String matricula) throws IllegalStateException, IllegalArgumentException {
-        for (Map.Entry<Integer, Auto> registro : autos.entrySet()) {
-            if (registro.getValue() == null)
+        for (int i = 0; i < autos.size(); i++) {
+            Auto auto = autos.elementAt(i);
+            if (!matricula.equalsIgnoreCase(auto.matricula))
                 continue;
-            return retirarAuto(registro.getKey());
+            return retirarAuto(i);
         }
         throw new IllegalArgumentException(String.format(
                 "No se puede retirar auto con matricula %s, no se encuentra en elevador %d", matricula, numero));
@@ -158,11 +151,7 @@ class Elevador {
      * @return Determina el numero de espacios disponibles
      */
     int disponibles() {
-        int disponibles = this.capacidad;
-        for (Object auto : autos.values())
-            if (auto != null)
-                disponibles--;
-        return disponibles;
+        return capacidad - autos.size();
     }
 
     /**
@@ -342,7 +331,7 @@ class AdministradorElevador {
             case 2: {
                 Elevador.Status resultado = retirarAuto();
                 if (resultado == null) {
-                    System.out.println("No se pudo ingresar auto");
+                    System.out.println("No se pudo retirar auto");
                 } else {
                     System.out.println("Auto Retirado:");
                     System.out.println(String.format("\tElevador: %d", resultado.numeroElevador));
